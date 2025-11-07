@@ -1,0 +1,47 @@
+- name: Asegurandonos que Java 21 esté instalado
+  apt:
+    name: openjdk-21-jdk
+    state: present
+    update_cache: yes
+
+- name: Crear usuario del servicio
+  user:
+    name: "{{ app_user }}"
+    shell: /bin/bash
+    create_home: yes
+    state: present
+
+- name: Crear directorio para la aplicación
+  file:
+    path: "{{ app_dir }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0755'
+
+- name: Copiar el archivo JAR al servidor
+  copy:
+    src: "{{ jar_file }}"
+    dest: "{{ app_dir }}/{{ jar_file }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0755'
+
+- name: Copiar el servicio systemd
+  template:
+    src: springboot.service.j2
+    dest: /etc/systemd/system/{{ service_name }}.service
+  notify:
+    - Reiniciar servicio Spring Boot
+
+- name: Iniciar y habilitar el servicio
+  systemd:
+    name: "{{ service_name }}"
+    state: started
+    enabled: yes
+
+- name: Reiniciar servicio Spring Boot
+  systemd:
+    name: "{{ service_name }}"
+    state: restarted
+    daemon_reload: yes
