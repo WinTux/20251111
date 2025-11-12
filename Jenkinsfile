@@ -56,11 +56,7 @@ pipeline {
             }
         }
         stage('Terraform Apply') {
-            when {
-                expression { env.BRANCH_NAME == 'master' }
-            }
             steps {
-                input message: "¿Aplicar cambios Terraform en PROD?"
                 withCredentials([
                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials'],
                    file(credentialsId: 'clasesdevops-pem', variable: 'AWS_KEY_FILE')
