@@ -51,17 +51,6 @@ pipeline {
                     terraform init
                     terraform validate
                     terraform plan -var="ruta_private_key=${AWS_KEY_FILE}" -out=tfplan
-                    """
-                }
-            }
-        }
-        stage('Terraform Apply') {
-            steps {
-                withCredentials([
-                   [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials'],
-                   file(credentialsId: 'clasesdevops-pem', variable: 'AWS_KEY_FILE')
-                ]){
-                    sh """
                     terraform apply -auto-approve tfplan
                     """
                 }
