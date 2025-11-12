@@ -11,7 +11,7 @@ provider "aws" {
 }
 locals {
   nombre_workspace = terraform.workspace
-  ruta_private_key = "/home/rusok/Documentos/DevOps/ejemploTerraform/clasesdevops.pem"
+  ruta_private_key = "/Users/rusokverse/Documents/20251105/clasesdevops.pem"
   nombre_key = "clasesdevops"
   usuario_ssh = "ubuntu"
 }
