@@ -46,11 +46,11 @@ pipeline {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials'
-                ]]) {
+                ],file(credentialsId: 'clasesdevops-pem', variable: 'AWS_KEY_FILE')]) {
                     sh """
                     terraform init
-                    terraform validate
-                    terraform plan -out=tfplan
+                    terraform validate -var="ruta_private_key=${AWS_KEY_FILE}"
+                    terraform plan -var="ruta_private_key=${AWS_KEY_FILE}" -out=tfplan
                     """
                 }
             }
@@ -61,7 +61,14 @@ pipeline {
             }
             steps {
                 input message: "¿Aplicar cambios Terraform en PROD?"
-                sh "terraform apply -auto-approve tfplan"
+                withCredentials([
+                   [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials'],
+                   file(credentialsId: 'clasesdevops-pem', variable: 'AWS_KEY_FILE')
+                ]){
+                    sh """
+                    terraform apply -auto-approve -var="ruta_private_key=${AWS_KEY_FILE}" tfplan
+                    """
+                }
             }
         }
         stage('Deploy with Ansible') {

@@ -11,7 +11,6 @@ provider "aws" {
 }
 locals {
   nombre_workspace = terraform.workspace
-  ruta_private_key = "/Users/rusokverse/Documents/20251105/clasesdevops.pem"
   nombre_key = "clasesdevops"
   usuario_ssh = "ubuntu"
 }
@@ -32,12 +31,12 @@ resource "aws_instance" "mi_app_spring" {
     connection {
       type = "ssh"
       user = local.usuario_ssh
-      private_key = file(local.ruta_private_key)
+      private_key = file(var.ruta_private_key)
       host = self.public_ip
     }
   }
   provisioner "local-exec" {
-    command = "ansible-playbook -i ${self.public_ip}, --private-key ${local.ruta_private_key} main.yml"
+    command = "ansible-playbook -i ${self.public_ip}, --private-key ${var.ruta_private_key} main.yml"
   }
 }
 
