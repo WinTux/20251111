@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        terraform 'Terraform_1.13'
+        terraform 'Terraform_1.9'
     }
     environment {
         // Variables globales
