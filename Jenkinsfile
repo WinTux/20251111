@@ -62,7 +62,7 @@ pipeline {
                    file(credentialsId: 'clasesdevops-pem', variable: 'AWS_KEY_FILE')
                 ]){
                     sh """
-                    terraform apply -auto-approve -var="ruta_private_key=${AWS_KEY_FILE}" tfplan
+                    terraform apply -auto-approve tfplan
                     """
                 }
             }
