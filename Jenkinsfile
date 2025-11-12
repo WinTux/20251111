@@ -74,6 +74,21 @@ pipeline {
                 """
             }
         }
+        stage('Terraform Destroy') {
+            steps {
+                input message: "¿Deseas destruir la infraestructura creada?"
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials'],
+                    file(credentialsId: 'clasesdevops-pem', variable: 'AWS_KEY_FILE')
+                ]) {
+                    sh """
+                        cd terraform  # o la ruta donde está tu main.tf
+                        terraform init
+                        terraform destroy -auto-approve -var="ruta_private_key=${AWS_KEY_FILE}"
+                    """
+                }
+            }
+        }
     }
     post {
         success {
