@@ -57,7 +57,7 @@ pipeline {
         }
         stage('Terraform Apply') {
             when {
-                branch 'master'
+                expression { env.BRANCH_NAME == 'master' }
             }
             steps {
                 input message: "¿Aplicar cambios Terraform en PROD?"
