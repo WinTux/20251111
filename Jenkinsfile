@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        terraform 'Terraform_1.13'
+    }
     environment {
         // Variables globales
         APP_NAME = "ProySpring"
