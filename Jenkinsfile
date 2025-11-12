@@ -16,15 +16,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Instalando Ansible') {
-            steps {
-                sh '''
-                pip install --user ansible==2.19
-                export PATH=$HOME/.local/bin:$PATH
-                ansible --version
-                '''
-            }
-        }
         stage('Build & Test') {
             steps {
                 dir('ProySpring') {
