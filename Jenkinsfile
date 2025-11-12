@@ -49,7 +49,7 @@ pipeline {
                 ],file(credentialsId: 'clasesdevops-pem', variable: 'AWS_KEY_FILE')]) {
                     sh """
                     terraform init
-                    terraform validate -var="ruta_private_key=${AWS_KEY_FILE}"
+                    terraform validate
                     terraform plan -var="ruta_private_key=${AWS_KEY_FILE}" -out=tfplan
                     """
                 }
