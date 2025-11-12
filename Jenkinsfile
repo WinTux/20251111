@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-      docker { image 'williamyeh/ansible:debian11' }
-    }
+    agent any
     tools {
         terraform 'Terraform_1.9'
     }
